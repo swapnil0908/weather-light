@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <link rel="stylesheet" type = "text/css" href ="../style.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+     <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
+
+ <style>#mapid { height: 500px; width: 900px;}</style>
+    <title>CHECKINS</title>
+  </head>
+  <body>
+
+    <h1>WEATHER CHECK-INS</h1>
+    <div id="mapid"></div> 
+    
+      
+    <script>
+    
+    
+    const mymap = L.map('mapid').setView([0,0], 1);
+    const tiles = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    const layer = L.tileLayer(tiles);
+    layer.addTo(mymap);
+
+    /*
+    const myIcon = L.icon({
+    //iconUrl: 'ISS.png',
+    iconSize: [50, 32],
+    iconAnchor: [25, 16],
+
+    });*/
+
+    //console.log("here");
+    getData();
+    async function getData(){
+            
+            const response = await fetch('/dbdata');
+            const data = await response.json();
+
+          for(item of data){
+
+            const  marker = L.marker([item.lat,item.lon]).addTo(mymap);
+            const txt = `The weather at ${item.lon} &deg; , ${item.lon} &deg; is ${item.weatherInfo} and the temperature is ${item.tempInfo} &deg; C .`;
+            marker.bindPopup(txt).openPopup();
+            /*
+            const root = document.createElement('div');
+            //const mood = document.createElement('div');
+            const geo = document.createElement('div');
+            const date = document.createElement('div');
+            const weather = document.createElement('div');
+            const temp = document.createElement('div');
+
+            //mood.textContent = `mood: ${item.mood}`;
+            geo.textContent = `${item.lat}, ${item.lon}`;
+            const dateString = new Date(item.timestamp).toLocaleString();
+            date.textContent = dateString;
+            weather.textContent = `${item.weatherInfo}`;
+            temp.textContent = `${item.tempInfo}`;
+            
+
+
+            root.append(geo, date, weather, temp);
+            document.body.append(root);*/
+          }
+
+            //console.log(data);
+}
+ 
+
+
+    </script>
+    
+  </body>
+</html>
