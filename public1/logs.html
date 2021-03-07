@@ -1,21 +1,34 @@
+//checkins page
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <link rel="stylesheet" type = "text/css" href ="../style.css">
+     
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+     <!--<link rel="stylesheet" type = "text/css" href ="../style.css">-->
+    
+     <!--Leaflet mapping code import-->
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""/>
+     
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+      <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+       integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+       crossorigin=""></script>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-    crossorigin=""/>
-     <!-- Make sure you put this AFTER Leaflet's CSS -->
- <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
- integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
- crossorigin=""></script>
-
- <style>#mapid { height: 500px; width: 900px;}</style>
-    <title>CHECKINS</title>
+      <style>#mapid { height: 500px; width: 900px;}</style>
+      <title>CHECKINS</title>
+      <style> 
+        h1{
+        font-style: normal;
+        font-size: 30px;
+        color: black;
+        text-align: left;
+        }
+      </style>
+    
   </head>
   <body>
 
@@ -24,8 +37,7 @@
     
       
     <script>
-    
-    
+    <!--Mapping code import-->
     const mymap = L.map('mapid').setView([0,0], 1);
     const tiles = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     const layer = L.tileLayer(tiles);
@@ -39,7 +51,7 @@
 
     });*/
 
-    //console.log("here");
+    //function to iteratively get data stored in the database and display as checkins on the map
     getData();
     async function getData(){
             
@@ -47,11 +59,12 @@
             const data = await response.json();
 
           for(item of data){
-
+            //add a marker
             const  marker = L.marker([item.lat,item.lon]).addTo(mymap);
             const txt = `The weather at ${item.lon} &deg; , ${item.lon} &deg; is ${item.weatherInfo} and the temperature is ${item.tempInfo} &deg; C .`;
-            marker.bindPopup(txt).openPopup();
+            marker.bindPopup(txt);
             /*
+            //add logs of coordinates and timestamp to the body of the page...
             const root = document.createElement('div');
             //const mood = document.createElement('div');
             const geo = document.createElement('div');
@@ -66,17 +79,13 @@
             weather.textContent = `${item.weatherInfo}`;
             temp.textContent = `${item.tempInfo}`;
             
-
-
             root.append(geo, date, weather, temp);
             document.body.append(root);*/
           }
 
             //console.log(data);
-}
+    }
  
-
-
     </script>
     
   </body>
